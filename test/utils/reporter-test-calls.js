@@ -32,7 +32,8 @@ module.exports = [
   {
     method: 'reportTestDone',
     args: [
-      'First test in first fixture',
+      `First test in first fixture
+      this is new line test`,
       {
         errs: [],
         durationMs: 74000,
