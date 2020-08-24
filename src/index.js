@@ -25,7 +25,7 @@ module.exports = () => ({
 
   reportTestDone: function reportTestDone(name, testRunInfo) {
     const hasErr = !!testRunInfo.errs.length;
-    const result = hasErr ? 'failed' : 'passed';
+    const result = hasErr ? '失敗' : '成功';
 
     if (testRunInfo.skipped) {
       this.skipped += 1;
@@ -80,14 +80,14 @@ module.exports = () => ({
     this.tableReports += '</td>\n';
     // Duration
     this.tableReports += this.indentString('<td>', 2);
-    this.tableReports += this.moment.duration(testRunInfo.durationMs).format('h[h] mm[m] ss[s]');
+    this.tableReports += this.moment.duration(testRunInfo.durationMs).format('h[時間] mm[分] ss[秒]');
     this.tableReports += '</td>\n';
     // Result
     this.tableReports += this.indentString('<td>', 2);
     if (testRunInfo.skipped) {
       this.tableReports += 'skipped';
-    } else if (result === 'failed') {
-      this.tableReports += `<a href="#test-${this.currentTestNumber}">failed</a>`;
+    } else if (result === '失敗') {
+      this.tableReports += `<a href="#test-${this.currentTestNumber}">失敗</a>`;
     } else {
       this.tableReports += result;
     }
@@ -97,7 +97,11 @@ module.exports = () => ({
     this.tableReports += this.indentString('</tr>\n');
   },
 
-  reportTaskDone: function reportTaskDone() {
+  reportTaskDone: function reportTaskDone(endTime, passed) {
+    const durationMs = endTime - this.startTime;
+    const durationStr = this.moment.duration(durationMs).format('h[時間] mm[分] ss[秒]');
+    const failed = this.testCount - passed;
+
     // Opening html
     let html = `<!DOCTYPE html>
 <html lang="en">
@@ -173,7 +177,7 @@ module.exports = () => ({
 
     // Now add a summary
     html += `
-      <h1 class="text-primary">TestCafe Test Summary</h1>
+      <h1 class="text-primary">TestCafe</h1>
       <div class="client-logo" style="padding:15px"></div>`;
 
     // Summary table
@@ -182,10 +186,10 @@ module.exports = () => ({
         <thead>
           <tr>
             <th>#</th>
-            <th>Fixture</th>
-            <th>Test Name</th>
-            <th>Duration</th>
-            <th>Result</th>
+            <th>画面</th>
+            <th>項目</th>
+            <th>所要時間</th>
+            <th>結果</th>
           </tr>
         </thead>
         <tbody>
@@ -196,8 +200,8 @@ module.exports = () => ({
             <th></th>
             <th></th>
             <th></th>
-            <th></th>
-            <th></th>
+            <th>${durationStr}</th>
+            <th>${this.testCount - failed} / ${this.testCount}</th>
           </tr>
         </thead>
       </table>
