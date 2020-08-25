@@ -72,7 +72,7 @@ module.exports = () => ({
 
     // Fixture
     this.tableReports += this.indentString('<td>', 2);
-    this.tableReports += this.currentFixtureName;
+    this.tableReports += this.currentFixtureName.replace(/\r?\n/g, '<br>\n');;
     this.tableReports += '</td>\n';
     // Test
     this.tableReports += this.indentString('<td>', 2);

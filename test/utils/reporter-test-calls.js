@@ -163,6 +163,27 @@ module.exports = [
     ],
   },
   {
+    method: 'reportFixtureStart',
+    args: [
+      `Forth fixture
+      this is new line test`,
+      './fixture4.js',
+    ],
+  },
+  {
+    method: 'reportTestDone',
+    args: [
+      'Forth test in first fixture',
+      {
+        errs: [],
+        durationMs: 0,
+        unstable: false,
+        screenshotPath: null,
+        skipped: false,
+      },
+    ],
+  },
+  {
     method: 'reportTaskDone',
     args: [
       `${endDate.getUTCDate()}/${endDate.getUTCMonth() + 1}/${endDate.getUTCFullYear()} ${endDate.getUTCHours()}:${endDate.getUTCMinutes()}:${endDate.getUTCSeconds()}`,
